@@ -33,6 +33,26 @@
   <p>
     Hej 👋 Uczę się tworzenia stron internetowych i to jest moja pierwsza strona na GitHub Pages 🚀
   </p>
+</div> <br>
+
+
+<div class="game">
+  <h2>🎮 Timing Hold Game</h2>
+
+  <p id="status">Kliknij START</p>
+
+  <button id="startBtn" onclick="startHoldGame()">START</button>
+
+  <button id="holdBtn"
+          onmousedown="startHold()"
+          onmouseup="endHold()"
+          ontouchstart="startHold()"
+          ontouchend="endHold()"
+          disabled>
+    TRZYMAJ MNIE
+  </button>
+
+  <p id="wynik"></p>
 </div>
 
 
