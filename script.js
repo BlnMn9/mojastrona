@@ -24,7 +24,11 @@ function przelaczMotyw() {
 
   if (document.body.classList.contains("dark")) {
     btn.innerText = "☀️ Light Mode";
+
+    localStorage.setItem("motyw", "dark");
   } else {
     btn.innerText = "🌙 Dark Mode";
+
+    localStorage.setItem("motyw", "light");
   }
 }
