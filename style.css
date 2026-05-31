@@ -4,6 +4,9 @@ body {
   background: linear-gradient(135deg, #4facfe, #00f2fe);
   color: white;
   text-align: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
 }
 
 h1 {
