@@ -19,4 +19,12 @@ function zmienTekst() {
 
 function przelaczMotyw() {
   document.body.classList.toggle("dark");
+
+  const btn = document.getElementById("darkModeBtn");
+
+  if (document.body.classList.contains("dark")) {
+    btn.innerText = "☀️ Light Mode";
+  } else {
+    btn.innerText = "🌙 Dark Mode";
+  }
 }
