@@ -50,3 +50,63 @@ if (zapisanyMotyw === "dark") {
     btn.innerText = "☀️ Light Mode";
   }
 }
+
+
+
+
+let canHold = false;
+let holdStart = 0;
+let targetTime = 0;
+let timeout;
+
+function startHoldGame() {
+  document.getElementById("status").innerText = "Czekaj...";
+  document.getElementById("wynik").innerText = "";
+  document.getElementById("holdBtn").disabled = true;
+
+  let delay = Math.random() * 3000 + 2000; // 2–5 sek
+
+  targetTime = Math.random() * 3000 + 2000; // cel: 2–5 sek
+
+  timeout = setTimeout(() => {
+    document.getElementById("status").innerText =
+      "TERAZ TRZYMAJ PRZYCISK! ⏱️";
+
+    canHold = true;
+    document.getElementById("holdBtn").disabled = false;
+    holdStart = Date.now();
+  }, delay);
+}
+
+function startHold() {
+  if (!canHold) return;
+
+  holdStart = Date.now();
+}
+
+function endHold() {
+  if (!canHold) return;
+
+  let holdTime = Date.now() - holdStart;
+
+  canHold = false;
+  document.getElementById("holdBtn").disabled = true;
+
+  let diff = Math.abs(holdTime - targetTime);
+
+  let wynik = "";
+
+  if (diff < 200) {
+    wynik = "🔥 PERFECT!";
+  } else if (diff < 500) {
+    wynik = "👍 DOBRZE!";
+  } else {
+    wynik = "❌ słabo";
+  }
+
+  document.getElementById("wynik").innerText =
+    `Twój czas: ${holdTime} ms | cel: ${targetTime.toFixed(0)} ms → ${wynik}`;
+
+  document.getElementById("status").innerText =
+    "Kliknij START żeby zagrać ponownie";
+}
