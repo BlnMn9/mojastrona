@@ -24,6 +24,20 @@ p {
 
 
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.center {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -70,7 +84,6 @@ button {
 
 
 .game {
-  text-align: center;
   margin-top: 40px;
   padding: 20px;
   background: rgba(255,255,255,0.2);
