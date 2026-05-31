@@ -85,12 +85,13 @@ button {
 
 .game {
   text-align: center;
-  padding: 20px;
   background: rgba(255,255,255,0.2);
   border-radius: 15px;
-  width: 90%;
   max-width: 400px;
+  padding: 20px;
+  width: 90%;
 }
+
 
 #holdBtn {
   margin-top: 10px;
