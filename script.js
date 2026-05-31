@@ -35,3 +35,18 @@ function przelaczMotyw() {
     localStorage.setItem("motyw", "light");
   }
 }
+
+
+
+
+const zapisanyMotyw = localStorage.getItem("motyw");
+
+if (zapisanyMotyw === "dark") {
+  document.body.classList.add("dark");
+
+  const btn = document.getElementById("darkModeBtn");
+
+  if (btn) {
+    btn.innerText = "☀️ Light Mode";
+  }
+}
