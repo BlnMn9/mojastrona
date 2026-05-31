@@ -36,23 +36,27 @@
 </div> 
 
 
-<div class="game">
-  <h2>🎮 Timing Hold Game</h2>
+<div class="center">
+  <div class="game">
 
-  <p id="status">Kliknij START</p>
+    <h2>🎮 Timing Hold Game</h2>
 
-  <button id="startBtn" onclick="startHoldGame()">START</button>
+    <p id="status">Kliknij START</p>
 
-  <button id="holdBtn"
-          onmousedown="startHold()"
-          onmouseup="endHold()"
-          ontouchstart="startHold()"
-          ontouchend="endHold()"
-          disabled>
-    TRZYMAJ MNIE
-  </button>
+    <button id="startBtn" onclick="startHoldGame()">START</button>
 
-  <p id="wynik"></p>
+    <button id="holdBtn"
+            onmousedown="startHold()"
+            onmouseup="endHold()"
+            ontouchstart="startHold()"
+            ontouchend="endHold()"
+            disabled>
+      TRZYMAJ MNIE
+    </button>
+
+    <p id="wynik"></p>
+
+  </div>
 </div>
 
 
