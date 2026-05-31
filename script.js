@@ -17,6 +17,9 @@ function zmienTekst() {
   }
 }
 
+
+
+
 function przelaczMotyw() {
   document.body.classList.toggle("dark");
 
