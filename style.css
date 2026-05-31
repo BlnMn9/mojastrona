@@ -18,3 +18,21 @@ p {
 .container {
   margin-top: 50px;
 }
+
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.dark {
+  background: #121212;
+  color: white;
+}
+
+.dark .card {
+  background: rgba(255, 255, 255, 0.1);
+}
