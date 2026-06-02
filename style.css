@@ -29,11 +29,22 @@ html, body {
   margin: 0;
 }
 
-.center {
-  height: 100vh;
+
+
+.body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  color: white;
+  text-align: center;
+
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  min-height: 100vh;
+  padding: 10px;
 }
 
 
