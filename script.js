@@ -64,9 +64,9 @@ function startHoldGame() {
   document.getElementById("wynik").innerText = "";
   document.getElementById("holdBtn").disabled = true;
 
-  let delay = Math.random() * 4000 + 1000; // 2–5 sek
+  let delay = Math.random() * 4000 + 1000;
 
-  targetTime = Math.random() * 4000 + 1000; // cel: 2–5 sek
+  targetTime = delay;
 
   timeout = setTimeout(() => {
     document.getElementById("status").innerText =
