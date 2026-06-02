@@ -12,53 +12,50 @@
 </head>
 <body>
 
-  <h1>Cześć 👋</h1>
+  <div class="top">
+    <h1>Cześć 👋</h1>
 
-  <p id="tekst">Moja strona działa teraz z JavaScript!</p>
+    <p id="tekst">Moja strona działa teraz z JavaScript!</p>
 
-  <button onclick="zmienTekst()">Kliknij mnie</button>
+    <button onclick="zmienTekst()">Kliknij mnie</button>
+
+    <button id="darkModeBtn" onclick="przelaczMotyw()">
+      🌙 Dark Mode
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>O mnie</h2>
+    <p>
+      Hej 👋 Uczę się tworzenia stron internetowych i to jest moja pierwsza strona na GitHub Pages 🚀
+    </p>
+  </div>
+
+  <div class="center">
+    <div class="game">
+
+      <h2>🎮 Timing Hold Game</h2>
+
+      <p id="status">Kliknij START</p>
+
+      <button id="startBtn" onclick="startHoldGame()">START</button>
+
+      <button id="holdBtn"
+              onmousedown="startHold()"
+              onmouseup="endHold()"
+              ontouchstart="startHold()"
+              ontouchend="endHold()"
+              disabled>
+        TRZYMAJ MNIE
+      </button>
+
+      <p id="wynik"></p>
+
+    </div>
+  </div>
 
   <script src="script.js"></script>
 
-
-
-<button id="darkModeBtn" onclick="przelaczMotyw()">
-  🌙 Dark Mode
-</button>
-
-
-
-<div class="card">
-  <h2>O mnie</h2>
-  <p>
-    Hej 👋 Uczę się tworzenia stron internetowych i to jest moja pierwsza strona na GitHub Pages 🚀
-  </p>
-</div> 
-
-
-<div class="center">
-  <div class="game">
-
-    <h2>🎮 Timing Hold Game</h2>
-
-    <p id="status">Kliknij START</p>
-
-    <button id="startBtn" onclick="startHoldGame()">START</button>
-
-    <button id="holdBtn"
-            onmousedown="startHold()"
-            onmouseup="endHold()"
-            ontouchstart="startHold()"
-            ontouchend="endHold()"
-            disabled>
-      TRZYMAJ MNIE
-    </button>
-
-    <p id="wynik"></p>
-
-  </div>
-</div>
-
-
 </body>
+
 </html>
