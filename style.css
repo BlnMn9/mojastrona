@@ -167,3 +167,8 @@ button:hover {
 }
 
 
+#status {
+  font-size: 40px;
+  min-height: 60px;
+  margin: 20px 0;
+}
