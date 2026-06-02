@@ -60,22 +60,24 @@ let targetTime = 0;
 let timeout;
 
 function startHoldGame() {
-  document.getElementById("status").innerText = "Czekaj...";
   document.getElementById("wynik").innerText = "";
   document.getElementById("holdBtn").disabled = true;
 
-  let delay = Math.random() * 4000 + 1000;
+  targetTime = Math.random() * 4000 + 1000;
 
-  targetTime = delay;
+  const status = document.getElementById("status");
 
-  timeout = setTimeout(() => {
-    document.getElementById("status").innerText =
-      "TERAZ TRZYMAJ PRZYCISK PRZEZ TAKI SAM CZAS! ⏱️";
+  status.innerText = "🟩";
+
+  setTimeout(() => {
+    status.innerText = "Odtwórz ten czas! ⏱️";
 
     canHold = true;
     document.getElementById("holdBtn").disabled = false;
-  }, delay);
+  }, targetTime);
 }
+
+
 
 function startHold() {
   if (!canHold) return;
