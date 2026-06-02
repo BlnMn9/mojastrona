@@ -74,7 +74,6 @@ function startHoldGame() {
 
     canHold = true;
     document.getElementById("holdBtn").disabled = false;
-    holdStart = Date.now();
   }, delay);
 }
 
