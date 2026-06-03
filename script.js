@@ -179,3 +179,44 @@ function rotate([x, y, z, w], a) {
     x * sin + w * cos
   ];
 }
+
+
+let angle = 0;
+
+function project([x, y, z, w]) {
+  let distance = 4;
+  let scale = distance / (distance - w);
+
+  return [x * scale, y * scale, z * scale];
+}
+
+function to2D([x, y, z]) {
+  let f = 120;
+  return [
+    x * f + canvas.width / 2,
+    y * f + canvas.height / 2
+  ];
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  let rotated = points.map(p => rotate(p, angle));
+  let projected = rotated.map(project);
+  let screen = projected.map(to2D);
+
+  ctx.strokeStyle = "white";
+
+  edges.forEach(([a, b]) => {
+    ctx.beginPath();
+    ctx.moveTo(screen[a][0], screen[a][1]);
+    ctx.lineTo(screen[b][0], screen[b][1]);
+    ctx.stroke();
+  });
+
+  angle += 0.02;
+
+  requestAnimationFrame(draw);
+}
+
+draw();
