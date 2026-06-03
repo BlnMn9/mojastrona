@@ -139,6 +139,13 @@ button:hover {
 }
 
 
+canvas {
+  display: block;
+  margin: 20px auto;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+
 
 #holdBtn {
   margin-top: 10px;
