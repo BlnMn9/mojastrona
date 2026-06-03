@@ -118,9 +118,6 @@ function endHold() {
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
-
 // Teserakt: 16 wierzchołków 4D (każda kombinacja ±1 dla x,y,z,w)
 const vertices4D = [];
 for (let x of [-1, 1])
@@ -146,11 +143,9 @@ function rotate4D([x, y, z, w], angleXZ, angleYW) {
   const cosXZ = Math.cos(angleXZ), sinXZ = Math.sin(angleXZ);
   const cosYW = Math.cos(angleYW), sinYW = Math.sin(angleYW);
 
-  // obrót w płaszczyźnie XZ
   const x1 = x * cosXZ - z * sinXZ;
   const z1 = x * sinXZ + z * cosXZ;
 
-  // obrót w płaszczyźnie YW
   const y1 = y * cosYW - w * sinYW;
   const w1 = y * sinYW + w * cosYW;
 
@@ -159,18 +154,19 @@ function rotate4D([x, y, z, w], angleXZ, angleYW) {
 
 // Rzut perspektywiczny 4D → 3D
 function project4Dto3D([x, y, z, w]) {
-  const d4 = 3; // odległość obserwatora w 4D
+  const d4 = 3;
   const scale = d4 / (d4 - w);
   return [x * scale, y * scale, z * scale];
 }
 
-// Rzut perspektywiczny 3D → 2D
+// Rzut perspektywiczny 3D → 2D — skala relatywna do rozmiaru canvasa
 function project3Dto2D([x, y, z]) {
   const d3 = 4;
-  const scale = d3 / (d3 - z);
+  const scale = Math.min(canvas.width, canvas.height) / 4.5;
+  const s = d3 / (d3 - z);
   return [
-    x * scale * 120 + canvas.width / 2,
-    y * scale * 120 + canvas.height / 2
+    x * s * scale + canvas.width / 2,
+    y * s * scale + canvas.height / 2
   ];
 }
 
@@ -185,13 +181,10 @@ let angleYW = 0;
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Obróć wszystkie 16 wierzchołków 4D
   const rotated4D = vertices4D.map(v => rotate4D(v, angleXZ, angleYW));
-
-  // Rzutuj do 2D
   const screen = rotated4D.map(v => project3Dto2D(project4Dto3D(v)));
 
-  // Sortuj krawędzie po głębokości (painter's algorithm) – głębsze rysuj pierwsze
+  // Sortuj krawędzie po głębokości (painter's algorithm)
   const sortedEdges = [...edges].sort((a, b) => {
     const dA = depth4D(rotated4D[a[0]]) + depth4D(rotated4D[a[1]]);
     const dB = depth4D(rotated4D[b[0]]) + depth4D(rotated4D[b[1]]);
@@ -200,14 +193,12 @@ function draw() {
 
   sortedEdges.forEach(([a, b]) => {
     const avgDepth = (depth4D(rotated4D[a]) + depth4D(rotated4D[b])) / 2;
-    // Kolor od głębokości: od niebieskiego (głęboko) do cyjanowego (blisko)
-    const t = (avgDepth + 2.5) / 5; // normalizuj do [0,1]
+    const t = (avgDepth + 2.5) / 5;
     const r = Math.round(30 + t * 80);
     const g = Math.round(180 + t * 75);
-    const blue = Math.round(255);
     const alpha = 0.4 + t * 0.6;
 
-    ctx.strokeStyle = `rgba(${r}, ${g}, ${blue}, ${alpha})`;
+    ctx.strokeStyle = `rgba(${r}, ${g}, 255, ${alpha})`;
     ctx.lineWidth = 0.8 + t * 1.2;
 
     ctx.beginPath();
@@ -228,11 +219,21 @@ function draw() {
     ctx.fill();
   });
 
-  // Dwa różne kąty dla efektu 4D
   angleXZ += 0.012;
   angleYW += 0.007;
 
   requestAnimationFrame(draw);
 }
 
-draw();
+// Inicjalizacja po pierwszym renderze — canvas ma już właściwy rozmiar CSS
+requestAnimationFrame(() => {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  draw();
+});
+
+// Responsywność — dostosuj przy zmianie rozmiaru okna
+window.addEventListener("resize", () => {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+});
