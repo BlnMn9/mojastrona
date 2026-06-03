@@ -178,10 +178,10 @@ function project([x, y, z, w]) {
 
 // 3D → 2D
 function to2D([x, y, z]) {
-  let f = 200;
+  let f = 120;
   return [
-    x * f + 200,
-    y * f + 200
+    x * f + canvas.width / 2,
+    y * f + canvas.height / 2
   ];
 }
 
