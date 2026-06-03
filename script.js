@@ -136,7 +136,7 @@ for (let x of [-1, 1]) {
 for (let x of [-1, 1]) {
   for (let y of [-1, 1]) {
     for (let z of [-1, 1]) {
-      points.push([x * 2, y * 2, z * 2]);
+      points.push([x * 2 + 3, y * 2 + 3, z * 2 + 3]);
     }
   }
 }
