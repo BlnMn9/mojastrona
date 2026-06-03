@@ -172,12 +172,15 @@ function rotate([x, y, z, w], a) {
   let cos = Math.cos(a);
   let sin = Math.sin(a);
 
-  return [
-    x * cos - w * sin,
-    y * cos - z * sin,
-    y * sin + z * cos,
-    x * sin + w * cos
-  ];
+  // rotacja XW
+  let x1 = x * cos - w * sin;
+  let w1 = x * sin + w * cos;
+
+  // rotacja YZ
+  let y1 = y * cos - z * sin;
+  let z1 = y * sin + z * cos;
+
+  return [x1, y1, z1, w1];
 }
 
 
