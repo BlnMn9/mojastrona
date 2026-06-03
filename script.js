@@ -121,89 +121,61 @@ const ctx = canvas.getContext("2d");
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
-// 16 wierzchołków
 let points = [];
 
-for (let i = 0; i < 16; i++) {
-  points.push([
-    (i & 1) ? 1 : -1,
-    (i & 2) ? 1 : -1,
-    (i & 4) ? 1 : -1,
-    (i & 8) ? 1 : -1
-  ]);
-}
-
-// krawędzie tesseraktu (to jest KLUCZ)
-let edges = [];
-
-for (let i = 0; i < 16; i++) {
-  for (let j = i + 1; j < 16; j++) {
-    let diff = 0;
-    for (let k = 0; k < 4; k++) {
-      if (points[i][k] !== points[j][k]) diff++;
+// cube 1 (mały)
+for (let x of [-1, 1]) {
+  for (let y of [-1, 1]) {
+    for (let z of [-1, 1]) {
+      points.push([x, y, z, -1]); // w = -1
     }
-    if (diff === 1) edges.push([i, j]);
   }
 }
 
-let angle = 0;
+// cube 2 (duży)
+for (let x of [-1, 1]) {
+  for (let y of [-1, 1]) {
+    for (let z of [-1, 1]) {
+      points.push([x * 1.8, y * 1.8, z * 1.8, 1]); // w = +1
+    }
+  }
+}
 
-// rotacja 4D (XW + YW)
+
+
+let edges = [];
+
+// cube connections inside each group
+for (let i = 0; i < 8; i++) {
+  for (let j = i + 1; j < 8; j++) {
+    if (isEdge(points[i], points[j])) edges.push([i, j]);
+    if (isEdge(points[i + 8], points[j + 8])) edges.push([i + 8, j + 8]);
+  }
+}
+
+// connect cubes together
+for (let i = 0; i < 8; i++) {
+  edges.push([i, i + 8]);
+}
+
+function isEdge(a, b) {
+  let diff = 0;
+  for (let i = 0; i < 3; i++) {
+    if (a[i] !== b[i]) diff++;
+  }
+  return diff === 1;
+}
+
+
+
 function rotate([x, y, z, w], a) {
   let cos = Math.cos(a);
   let sin = Math.sin(a);
 
-  // XW
-  let x1 = x * cos - w * sin;
-  let w1 = x * sin + w * cos;
-
-  // YZ (druga rotacja dla efektu 4D)
-  let y1 = y * cos - z * sin;
-  let z1 = y * sin + z * cos;
-
-  return [x1, y1, z1, w1];
-}
-
-// projekcja 4D → 3D
-function project([x, y, z, w]) {
-  let distance = 4;
-  let scale = distance / (distance - w);
-
   return [
-    x * scale,
-    y * scale,
-    z * scale
+    x * cos - w * sin,
+    y * cos - z * sin,
+    y * sin + z * cos,
+    x * sin + w * cos
   ];
 }
-
-// 3D → 2D
-function to2D([x, y, z]) {
-  let f = 120;
-  return [
-    x * f + canvas.width / 2,
-    y * f + canvas.height / 2
-  ];
-}
-
-function draw() {
-  ctx.clearRect(0, 0, 400, 400);
-
-  let rotated = points.map(p => rotate(p, angle));
-  let projected = rotated.map(project);
-  let screen = projected.map(to2D);
-
-  // rysuj krawędzie
-  ctx.strokeStyle = "white";
-  edges.forEach(([a, b]) => {
-    ctx.beginPath();
-    ctx.moveTo(screen[a][0], screen[a][1]);
-    ctx.lineTo(screen[b][0], screen[b][1]);
-    ctx.stroke();
-  });
-
-  angle += 0.02;
-
-  requestAnimationFrame(draw);
-}
-
-draw();
