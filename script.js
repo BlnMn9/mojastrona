@@ -118,8 +118,8 @@ function endHold() {
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = 400;
-canvas.height = 400;
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
 // 16 wierzchołków
 let points = [];
