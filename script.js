@@ -118,8 +118,8 @@ function endHold() {
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = 400;
-canvas.height = 400;
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
 // Teserakt: 16 wierzchołków 4D (każda kombinacja ±1 dla x,y,z,w)
 const vertices4D = [];
