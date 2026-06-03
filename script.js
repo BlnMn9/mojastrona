@@ -178,11 +178,13 @@ function rotate([x, y, z], a) {
   let cos = Math.cos(a);
   let sin = Math.sin(a);
 
-  return [
-    x * cos - z * sin,
-    y,
-    x * sin + z * cos
-  ];
+  let x1 = x * cos - z * sin;
+  let z1 = x * sin + z * cos;
+
+  let y1 = y * cos - x * sin;
+  let x2 = y * sin + x1 * cos;
+
+  return [x2, y1, z1];
 }
 
 
@@ -195,3 +197,29 @@ function to2D([x, y, z]) {
     y * f + canvas.height / 2
   ];
 }
+
+
+
+let angle = 0;
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  let rotated = points.map(p => rotate(p, angle));
+  let projected = rotated.map(to2D);
+  let screen = projected;
+
+  ctx.strokeStyle = "white";
+
+  edges.forEach(([a, b]) => {
+    ctx.beginPath();
+    ctx.moveTo(screen[a][0], screen[a][1]);
+    ctx.lineTo(screen[b][0], screen[b][1]);
+    ctx.stroke();
+  });
+
+  angle += 0.02;
+  requestAnimationFrame(draw);
+}
+
+draw();
