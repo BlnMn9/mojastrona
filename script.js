@@ -187,11 +187,10 @@ function rotate([x, y, z], a) {
 
 
 
-function to2D([x, y, z]) {
-  let f = 150;
+function to2D([x, y]) {
   return [
-    x * f + canvas.width / 2,
-    y * f + canvas.height / 2
+    x * 150 + canvas.width / 2,
+    y * 150 + canvas.height / 2
   ];
 }
 
@@ -220,3 +219,10 @@ function draw() {
 }
 
 draw();
+
+function project([x, y, z]) {
+  let distance = 4;
+  let scale = distance / (distance - z);
+
+  return [x * scale, y * scale];
+}
