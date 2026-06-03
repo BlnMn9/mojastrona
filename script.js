@@ -121,55 +121,84 @@ const ctx = canvas.getContext("2d");
 canvas.width = 400;
 canvas.height = 400;
 
-// 16 punktów teseraktu (4D: x,y,z,w)
+// 16 wierzchołków
 let points = [];
 
 for (let i = 0; i < 16; i++) {
-  points.push({
-    x: (i & 1) ? 1 : -1,
-    y: (i & 2) ? 1 : -1,
-    z: (i & 4) ? 1 : -1,
-    w: (i & 8) ? 1 : -1,
-  });
+  points.push([
+    (i & 1) ? 1 : -1,
+    (i & 2) ? 1 : -1,
+    (i & 4) ? 1 : -1,
+    (i & 8) ? 1 : -1
+  ]);
+}
+
+// krawędzie tesseraktu (to jest KLUCZ)
+let edges = [];
+
+for (let i = 0; i < 16; i++) {
+  for (let j = i + 1; j < 16; j++) {
+    let diff = 0;
+    for (let k = 0; k < 4; k++) {
+      if (points[i][k] !== points[j][k]) diff++;
+    }
+    if (diff === 1) edges.push([i, j]);
+  }
 }
 
 let angle = 0;
 
-// rotacja 4D
-function rotate4D(p, a) {
+// rotacja 4D (XW + YW)
+function rotate([x, y, z, w], a) {
   let cos = Math.cos(a);
   let sin = Math.sin(a);
 
-  let x = p.x * cos - p.w * sin;
-  let w = p.x * sin + p.w * cos;
+  // XW
+  let x1 = x * cos - w * sin;
+  let w1 = x * sin + w * cos;
 
-  return { ...p, x, w };
+  // YZ (druga rotacja dla efektu 4D)
+  let y1 = y * cos - z * sin;
+  let z1 = y * sin + z * cos;
+
+  return [x1, y1, z1, w1];
 }
 
 // projekcja 4D → 3D
-function project(p) {
-  let distance = 2;
-  let scale = 200 / (distance - p.w);
+function project([x, y, z, w]) {
+  let d = 3;
+  let scale = d / (d - w);
 
-  return {
-    x: p.x * scale,
-    y: p.y * scale,
-  };
+  return [
+    x * scale,
+    y * scale,
+    z * scale
+  ];
+}
+
+// 3D → 2D
+function to2D([x, y, z]) {
+  let f = 200;
+  return [
+    x * f + 200,
+    y * f + 200
+  ];
 }
 
 function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, 400, 400);
 
-  let rotated = points.map(p => rotate4D(p, angle));
+  let rotated = points.map(p => rotate(p, angle));
   let projected = rotated.map(project);
+  let screen = projected.map(to2D);
 
+  // rysuj krawędzie
   ctx.strokeStyle = "white";
-
-  // rysuj punkty
-  projected.forEach(p => {
+  edges.forEach(([a, b]) => {
     ctx.beginPath();
-    ctx.arc(p.x + 200, p.y + 200, 4, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(screen[a][0], screen[a][1]);
+    ctx.lineTo(screen[b][0], screen[b][1]);
+    ctx.stroke();
   });
 
   angle += 0.02;
