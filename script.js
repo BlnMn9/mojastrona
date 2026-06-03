@@ -178,7 +178,6 @@ function rotate([x, y, z], a) {
   let cos = Math.cos(a);
   let sin = Math.sin(a);
 
-  // obrót wokół osi Y
   let x1 = x * cos - z * sin;
   let z1 = x * sin + z * cos;
 
