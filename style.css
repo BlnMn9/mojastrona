@@ -147,6 +147,19 @@ canvas {
 }
 
 
+
+#canvas {
+  width: 100%;
+  max-width: 500px;
+  height: 500px;
+
+  background: rgba(0,0,0,0.2);
+  border-radius: 15px;
+}
+
+
+
+
 #holdBtn {
   margin-top: 10px;
   padding: 15px;
