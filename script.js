@@ -123,40 +123,46 @@ canvas.height = 400;
 
 let points = [];
 
-// cube 1 (mały)
+// cube A
 for (let x of [-1, 1]) {
   for (let y of [-1, 1]) {
     for (let z of [-1, 1]) {
-      points.push([x, y, z, -1]); // w = -1
+      points.push([x, y, z]);
     }
   }
 }
 
-// cube 2 (duży)
+// cube B (większy)
 for (let x of [-1, 1]) {
   for (let y of [-1, 1]) {
     for (let z of [-1, 1]) {
-      points.push([x * 1.8, y * 1.8, z * 1.8, 1]); // w = +1
+      points.push([x * 2, y * 2, z * 2]);
     }
   }
 }
-
 
 
 let edges = [];
 
-// cube connections inside each group
+// cube A
 for (let i = 0; i < 8; i++) {
   for (let j = i + 1; j < 8; j++) {
     if (isEdge(points[i], points[j])) edges.push([i, j]);
+  }
+}
+
+// cube B
+for (let i = 0; i < 8; i++) {
+  for (let j = i + 1; j < 8; j++) {
     if (isEdge(points[i + 8], points[j + 8])) edges.push([i + 8, j + 8]);
   }
 }
 
-// connect cubes together
+// łączenia między cube
 for (let i = 0; i < 8; i++) {
   edges.push([i, i + 8]);
 }
+
 
 function isEdge(a, b) {
   let diff = 0;
@@ -168,58 +174,24 @@ function isEdge(a, b) {
 
 
 
-function rotate([x, y, z, w], a) {
+function rotate([x, y, z], a) {
   let cos = Math.cos(a);
   let sin = Math.sin(a);
 
-  // rotacja XW
-  let x1 = x * cos - w * sin;
-  let w1 = x * sin + w * cos;
-
-  // rotacja YZ
-  let y1 = y * cos - z * sin;
-  let z1 = y * sin + z * cos;
-
-  return [x1, y1, z1, w1];
+  return [
+    x * cos - z * sin,
+    y,
+    x * sin + z * cos
+  ];
 }
 
 
-let angle = 0;
 
-function project([x, y, z, w]) {
-  let distance = 4;
-  let scale = distance / (distance - w);
-
-  return [x * scale, y * scale, z * scale];
-}
 
 function to2D([x, y, z]) {
-  let f = 120;
+  let f = 150;
   return [
     x * f + canvas.width / 2,
     y * f + canvas.height / 2
   ];
 }
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  let rotated = points.map(p => rotate(p, angle));
-  let projected = rotated.map(project);
-  let screen = projected.map(to2D);
-
-  ctx.strokeStyle = "white";
-
-  edges.forEach(([a, b]) => {
-    ctx.beginPath();
-    ctx.moveTo(screen[a][0], screen[a][1]);
-    ctx.lineTo(screen[b][0], screen[b][1]);
-    ctx.stroke();
-  });
-
-  angle += 0.02;
-
-  requestAnimationFrame(draw);
-}
-
-draw();
