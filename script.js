@@ -202,8 +202,8 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   let rotated = points.map(p => rotate(p, angle));
-  let projected = rotated.map(to2D);
-  let screen = projected;
+  let projected = rotated.map(project);
+  let screen = projected.map(to2D);
 
   ctx.strokeStyle = "white";
 
