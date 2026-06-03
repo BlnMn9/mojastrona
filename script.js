@@ -166,8 +166,8 @@ function rotate([x, y, z, w], a) {
 
 // projekcja 4D → 3D
 function project([x, y, z, w]) {
-  let d = 3;
-  let scale = d / (d - w);
+  let distance = 4;
+  let scale = distance / (distance - w);
 
   return [
     x * scale,
